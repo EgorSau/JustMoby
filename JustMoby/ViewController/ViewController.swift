@@ -9,49 +9,59 @@ import UIKit
 
 final class ViewController: UIViewController {
     
-    // MARK: Private Properties
+    private lazy var bannerView: UIView = {
+        let view = BannersCollection()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: CGRect.zero, style: .grouped)
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = .white
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "TableCell")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "DefaultCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
     
-    // MARK: viewDidLoad
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
     }
     
-    // MARK: Private
-    
     private func setupView(){
+        
+        //MARK: View
         self.view.backgroundColor = .white
-        self.navigationController?.title = "Home"
-        self.view.largeContentTitle = "Home"
+        self.title = "Home"
         
+        //MARK: BannerConstraints
+        self.view.addSubview(self.bannerView)
+        let topBanner = self.bannerView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
+        let leadingBanner = self.bannerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 8)
+        let trailingBanner = self.bannerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -8)
+        let heightBanner = self.bannerView.heightAnchor.constraint(equalToConstant: 112)
+        
+        NSLayoutConstraint.activate([topBanner,
+                                     leadingBanner,
+                                     trailingBanner,
+                                     heightBanner])
+        
+        //MARK: TableConstraints
         self.view.addSubview(self.tableView)
+        let topTable = self.tableView.topAnchor.constraint(equalTo: self.bannerView.bottomAnchor)
+        let leadingTable = self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor)
+        let trailingTable = self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        let bottomTable = self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         
-        let topTableConstraint = self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor)
-        let leadingTableConstraint = self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor)
-        let trailingTableConstraint = self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-        let bottomTableConstraint = self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-        
-        NSLayoutConstraint.activate([
-            topTableConstraint,
-            leadingTableConstraint,
-            trailingTableConstraint,
-            bottomTableConstraint
-        ])
+        NSLayoutConstraint.activate([topTable,
+                                     leadingTable,
+                                     trailingTable,
+                                     bottomTable])
     }
 }
-
-// MARK: - UITableViewDataSource, UITableViewDelegate
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -60,52 +70,31 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 0
-        case 1:
-            return 7
-        default:
-            return 0
-        }
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DefaultCell", for: indexPath)
-            return cell
-        case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableCell", for: indexPath) as? TableViewCell else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "DefaultCell", for: indexPath)
-                return cell
-            }
-            return cell
-        default:
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableCell", for: indexPath) as? TableViewCell else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DefaultCell", for: indexPath)
             return cell
         }
+        cell.setupWith(indexPath: indexPath)
+        return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch section {
-        case 0:
-            return BannersCollection()
         case 1...7:
-            let categoryView = CategoryView()
-            categoryView.setupNumber(forSection: section)
-            return categoryView
+            return CategoryCollection()
         default:
-            return nil
+            return UIView()
         }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
-        case 0:
+        case 1...7:
             return 112
-        case 1:
-            return 50
         default:
             return 0
         }
@@ -113,10 +102,8 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
-        case 0:
-            return 0
-        case 1:
-            return 112
+        case 0...5:
+            return 40
         default:
             return 0
         }

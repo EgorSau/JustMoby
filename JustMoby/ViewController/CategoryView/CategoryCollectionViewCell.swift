@@ -7,9 +7,9 @@
 
 import UIKit
 
-class CategoryCollectionCell: UICollectionViewCell {
+final class CategoryCollectionCell: UICollectionViewCell {
 
-    lazy var photoImage: UIImageView = {
+    private lazy var photoImage: UIImageView = {
         let photoImage = UIImageView()
         photoImage.translatesAutoresizingMaskIntoConstraints = false
         return photoImage
@@ -48,7 +48,4 @@ class CategoryCollectionCell: UICollectionViewCell {
             self.photoImage.image = UIImage(named: "2")
         }
     }
-    
 }
-
-
