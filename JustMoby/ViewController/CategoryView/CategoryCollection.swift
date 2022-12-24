@@ -22,6 +22,7 @@ final class CategoryCollection: UIView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.layout)
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.backgroundColor = .white
         collectionView.register(CategoryCollectionCell.self, forCellWithReuseIdentifier: "CategoryCell")
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "DefaultCell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false

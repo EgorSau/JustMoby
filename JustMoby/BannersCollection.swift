@@ -84,10 +84,12 @@ final class BannersCollection: UIView {
         let left = self.backgroundImage.leftAnchor.constraint(equalTo: self.leftAnchor)
         let right = self.backgroundImage.rightAnchor.constraint(equalTo: self.rightAnchor)
         
-        NSLayoutConstraint.activate([topConstraint,
-                                     centerY,
-                                     left,
-                                     right])
+        NSLayoutConstraint.activate([
+                                    topConstraint,
+                                    centerY,
+                                    left,
+                                    right
+                                    ])
     }
     
     private func setupConstraints(){
@@ -105,11 +107,13 @@ final class BannersCollection: UIView {
         let left = self.horizontalStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8)
         let right = self.horizontalStackView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8)
         
-        NSLayoutConstraint.activate([topConstraint,
-                                     centerY,
-                                     left,
-                                     right,
-                                     pictureRight,
-                                     labelsRight])
+        NSLayoutConstraint.activate([
+                                    topConstraint,
+                                    centerY,
+                                    left,
+                                    right,
+                                    pictureRight,
+                                    labelsRight
+                                    ])
     }
 }
